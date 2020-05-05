@@ -19,7 +19,7 @@ function App() {
           <Route path="/create" component={CreateProject} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
-          <Route path="/:postID" component={ProjectDetails} />
+          <Route path="/:projectID" component={ProjectDetails} />
         </Switch>
       </div>
     </BrowserRouter>

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { connect } from 'react-redux'
 
-export default function CreateProject() {
+//My actions
+import { createProject } from "../../store/actions/project/projectActions";
+
+function CreateProject({createProject}) {
   const [project, setProject] = useState({
     title: "",
-    body: "",
+    content: "",
   });
 
   const handleChange = (event) => {
@@ -12,7 +16,7 @@ export default function CreateProject() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(project);
+    createProject(project)
   };
 
   return (
@@ -26,11 +30,11 @@ export default function CreateProject() {
 
         <div className="input-field">
           <textarea
-            id="body"
+            id="content"
             className="materialize-textarea"
             onChange={handleChange}
           ></textarea>
-          <label htmlFor="body">Project Content</label>
+          <label htmlFor="content">Project Content</label>
         </div>
         <div className="input-field">
           <button className="btn blue lighten-1" type="submit">
@@ -41,3 +45,11 @@ export default function CreateProject() {
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch)=>{
+  return {
+    createProject: (project)=> dispatch(createProject(project))
+  }
+}
+
+export default connect(null,mapDispatchToProps)(CreateProject);
