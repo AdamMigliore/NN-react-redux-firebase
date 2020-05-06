@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 //My actions
 import { createProject } from "../../store/actions/project/projectActions";
 
-function CreateProject({createProject}) {
+function CreateProject({ createProject, auth }) {
   const [project, setProject] = useState({
     title: "",
     content: "",
@@ -16,8 +17,10 @@ function CreateProject({createProject}) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProject(project)
+    createProject(project);
   };
+
+  if (!auth.uid) return <Redirect to="/signin" />;
 
   return (
     <div className="container">
@@ -46,10 +49,16 @@ function CreateProject({createProject}) {
   );
 }
 
-const mapDispatchToProps = (dispatch)=>{
+const mapStateToProps = (state, ownState) => {
   return {
-    createProject: (project)=> dispatch(createProject(project))
-  }
-}
+    auth: state.firebase.auth,
+  };
+};
 
-export default connect(null,mapDispatchToProps)(CreateProject);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createProject: (project) => dispatch(createProject(project)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

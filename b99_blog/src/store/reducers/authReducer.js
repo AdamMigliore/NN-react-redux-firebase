@@ -3,6 +3,8 @@ import {
   SIGNOUT_FAILED,
   SIGNIN_SUCCESS,
   SIGNOUT_SUCCESS,
+  SIGNUP_FAILED,
+  SIGNUP_SUCCESS,
 } from "../actions/auth/authTypes";
 
 const initialState = {};
@@ -12,11 +14,15 @@ const authReducer = (state = initialState, action) => {
     case SIGNIN_SUCCESS:
       return { ...state, authError: null };
     case SIGNIN_FAILED:
-      return {...state, authError: action.err};
+      return { ...state, authError: action.err };
     case SIGNOUT_SUCCESS:
       return state;
     case SIGNOUT_FAILED:
-      return {...state, authError: action.err}      
+      return { ...state, authError: action.err };
+    case SIGNUP_SUCCESS:
+      return { ...state, authError: null };
+    case SIGNUP_FAILED:
+      return { ...state, authError: action.err };
     default:
       return state;
   }

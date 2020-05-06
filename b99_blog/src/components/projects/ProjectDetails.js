@@ -3,8 +3,10 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { PROJECTS_COLLECTION } from "../../firebase/firestore/collections";
+import { Redirect } from "react-router-dom";
 
-function ProjectDetails({ project }) {
+function ProjectDetails({ project, auth }) {
+  if (!auth.uid) return <Redirect to="/signin" />;
   if (project) {
     return (
       <div className="container section project-details">
@@ -36,7 +38,8 @@ const mapStateToProps = (state, ownState) => {
   const projects = state.firestore.data.projects;
   const project = projects ? projects[id] : null;
   return {
-    project: project,
+    auth: state.firebase.auth,
+    project,
   };
 };
 

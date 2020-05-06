@@ -12,12 +12,19 @@ import thunk from "redux-thunk";
 import { reduxFirestore, getFirestore } from "redux-firestore";
 import { reactReduxFirebase, getFirebase } from "react-redux-firebase";
 import firebaseConfig from "./config/firebaseConfig";
+import {USERS_COLLECTION} from './firebase/firestore/collections'
+
+const rrfConfig = {
+  attachAuthIsReady: true,
+  useFirestoreForProfile: true,
+  userProfile: USERS_COLLECTION
+}
 
 const store = createStore(
   rootReducer,
   compose(
     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reactReduxFirebase(firebaseConfig, { attachAuthIsReady: true }), // redux binding for firebase
+    reactReduxFirebase(firebaseConfig, rrfConfig), // redux binding for firebase
     reduxFirestore(firebaseConfig) // redux bindings for firestore
   )
 );
