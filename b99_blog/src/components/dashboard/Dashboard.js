@@ -4,13 +4,16 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { Redirect } from "react-router-dom";
 
-import { PROJECTS_COLLECTION } from "../../firebase/firestore/collections";
+import {
+  PROJECTS_COLLECTION,
+  NOTIFICATIONS_COLLECTION,
+} from "../../firebase/firestore/collections";
 
 //My Components
 import Notifications from "./Notifications";
 import ProjectList from "../projects/ProjectList";
 
-function Dashboard({ projects, auth }) {
+function Dashboard({ projects, auth, notifications }) {
   if (!auth.uid) return <Redirect to="/signin" />;
 
   return (
@@ -20,7 +23,7 @@ function Dashboard({ projects, auth }) {
           <ProjectList projects={projects} />
         </div>
         <div className="col s12 m5 offset-m1">
-          <Notifications />
+          <Notifications notifications={notifications} />
         </div>
       </div>
     </div>
@@ -31,6 +34,7 @@ const mapStateToProps = (state) => {
   return {
     projects: state.firestore.ordered.projects,
     auth: state.firebase.auth,
+    notifications: state.firestore.ordered.notifications,
   };
 };
 
@@ -39,6 +43,12 @@ export default compose(
   firestoreConnect([
     {
       collection: PROJECTS_COLLECTION,
+      orderBy: ["createdAt", "desc"],
+    },
+    {
+      collection: NOTIFICATIONS_COLLECTION,
+      limit: 3,
+      orderBy: ["timestamp", "desc"],
     },
   ])
 )(Dashboard);

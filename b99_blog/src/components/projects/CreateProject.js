@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 //My actions
 import { createProject } from "../../store/actions/project/projectActions";
@@ -11,6 +11,8 @@ function CreateProject({ createProject, auth }) {
     content: "",
   });
 
+  const history = useHistory();
+
   const handleChange = (event) => {
     setProject({ ...project, [event.target.id]: event.target.value });
   };
@@ -18,6 +20,7 @@ function CreateProject({ createProject, auth }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     createProject(project);
+    history.push('/');
   };
 
   if (!auth.uid) return <Redirect to="/signin" />;
